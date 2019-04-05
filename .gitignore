@@ -1,2 +1,9 @@
-node_modules
+.coveralls.yml
+.idea
+.npmrc
+.vscode
+
+node_modules/
+__tests__/coverage/
+
 *.log

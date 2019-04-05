@@ -1,52 +1,82 @@
-# Local CORS Proxy
+# Corsyusha — Local CORS Proxy
 
-Simple proxy to bypass CORS issues. This was built as a local dev only solution to enable prototyping against existing APIs without having to worry about CORS.
+## Description
 
-This module was built to solve the issue of getting this error:
+Simple and fast (built on top of [fastify](https://www.npmjs.com/package/fastify) proxy to bypass [CORS](https://developer.mozilla.org/ru/docs/Web/HTTP/CORS) issues during prototyping against existing APIs without having to worry about CORS
 
-```
-No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:3000' is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disable
-```
+This module was built to solve the issue of getting errors like this:
 
-## Getting Started
-
-```
-npm install -g local-cors-proxy
+```text
+... has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
 ```
 
-**Simple Example**
+## Installation
 
-API endpoint that we want to request that has CORS issues:
-
+```bash
+npm install -g corsyusha
+# or
+yarn global add corsyusha
 ```
-https://www.yourdomain.ie/movies/list
+
+## Testing
+
+```bash
+```
+
+## Usage
+
+Let's imagine API endpoint that we want to request that has CORS issues:
+
+```text
+https://licenseapi.herokuapp.com/licenses/mit
 ```
 
 Start Proxy:
 
-```
-lcp --proxyUrl https://www.yourdomain.ie
+```bash
+corsyusha --url https://licenseapi.herokuapp.com
 ```
 
 Or:
 
+```bash
+CORSYUSHA_URL=https://licenseapi.herokuapp.com corsyusha
 ```
-LCP_PROXY_URL=https://www.yourdomain.ie lcp
+
+Or you may pull Docker image and run a container:
+
+```bash
+docker pull lordotu/corsyusha
+
+docker run -dti \
+  -e CORSYUSHA_URL=https://licenseapi.herokuapp.com \
+  -e CORSYUSHA_HOST=0.0.0.0 \
+  -p 8118:8118 \
+  --name corsyusha \
+  lordotu/corsyusha
 ```
 
 Then in your client code, new API endpoint:
 
-```
-http://localhost:8010/proxy/movies/list
+```text
+http://localhost:8118/proxy/licenses/mit
 ```
 
-End result will be a request to `https://www.yourdomain.ie/movies/list` without the CORS issues!
+End result will be a request to `https://licenseapi.herokuapp.com/licenses/mit` without the CORS issues!
 
-Alternatively you can install the package locally and add a script to your project:
+Alternatively you can install the package locally:
+
+```bash
+npm install corsyusha
+# or
+yarn add corsyusha
+```
+
+And add a script to your project:
 
 ```json
  "scripts": {
-   "proxy": "lcp --proxyUrl https://www.yourdomain.ie"
+   "proxy": "corsyusha --url https://licenseapi.herokuapp.com"
  }
 ```
 
@@ -54,24 +84,36 @@ Or:
 
 ```json
  "scripts": {
-   "proxy": "LCP_PROXY_URL=https://www.yourdomain.ie lcp"
+   "proxy": "CORSYUSHA_URL=https://licenseapi.herokuapp.com corsyusha"
  }
 ```
 
-## Settings
+## Configuring
+
+You may set params via command line args or via env variables. All defaults are stored in `.env` file in the root directory.
+
+Only one argument is **required**: `--url` (or `CORSYUSHA_URL` if you prefer env variables).
 
 ### Options
 
-| Option         | Example               | Default |
-| -------------- | --------------------- | ------: |
-| --proxyUrl     | https://www.google.ie |         |
-| --proxyPartial | foo                   |   proxy |
-| --port         | 8010                  |    8010 |
+| Option          | Shorthand | Example                          | Default   |
+| --------------- | --------- | -------------------------------- | --------: |
+| --url           | -u        | https://licenseapi.herokuapp.com |           |
+| --port          | -p        | 8119                             |      8118 |
+| --host          | -h        | 0.0.0.0                          | localhost |
+| --urlSection    | -s        | trhough                          |     proxy |
+| --serverLogging | -l        | true                             |     false |
 
 ### Environment variables
 
-| Option            | Example               | Default |
-| ----------------- | --------------------- | ------: |
-| LCP_PROXY_URL     | https://www.google.ie |         |
-| LCP_PROXY_PARTIAL | foo                   |   proxy |
-| LCP_PORT          | 8010                  |    8010 |
+| Option                   | Example                          | Default   |
+| ------------------------ | -------------------------------- | --------: |
+| CORSYUSHA_URL            | https://licenseapi.herokuapp.com |           |
+| CORSYUSHA_PORT           | 8119                             |      8118 |
+| CORSYUSHA_HOST           | 0.0.0.0                          | localhost |
+| CORSYUSHA_URL_SECTION    | trhough                          |     proxy |
+| CORSYUSHA_SERVER_LOGGING | true                             |     false |
+
+---
+
+###### Inspired by: https://github.com/garmeeh/local-cors-proxy

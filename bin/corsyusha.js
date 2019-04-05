@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict'
+
 require('dotenv').config()
 
 const args = require('command-line-args')
@@ -22,29 +24,49 @@ const defaltArgs = [
     defaultValue: process.env.CORSYUSHA_PORT,
   },
   {
+    name: 'host',
+    alias: 'h',
+    type: String,
+    defaultValue: process.env.CORSYUSHA_HOST,
+  },
+  {
     name: 'urlSection',
     alias: 's',
     type: String,
     defaultValue: process.env.CORSYUSHA_URL_SECTION,
+  },
+  {
+    name: 'serverLogging',
+    alias: 'l',
+    type: Boolean,
+    defaultValue: process.env.CORSYUSHA_SERVER_LOGGING,
   },
 ]
 
 const main = async () => {
 
   try {
-    const { url, port, urlSection } = args(defaltArgs)
+    const {
+      url,
+      port,
+      host,
+      urlSection,
+      serverLogging,
+    } = args(defaltArgs)
 
     if (! url) {
       throw new Error('--url is required!')
     }
 
-    const _port = await detectPort(port)
+    const availablePort = await detectPort(port)
 
-    if (_port.toString() !== port.toString()) {
-      throw new Error(`--port ${port} was occupied, try port: ${_port}`)
+    if (availablePort.toString() !== port.toString()) {
+      throw new Error(`--port ${port} was occupied, try port: ${availablePort}`)
     }
 
-    corsyusha(url, port, urlSection)
+    const normalizedServerLogging = ['true', '1', 'yes', true, 1].includes(serverLogging)
+
+    corsyusha(url, port, host, urlSection, normalizedServerLogging)
   } catch (error) {
     console.error(error)
     process.exit(1)

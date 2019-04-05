@@ -1,13 +1,57 @@
 {
   "name": "corsyusha",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Simple and fast (built on top of fastify) proxy to bypass CORS issues during prototyping against existing APIs without having to worry about CORS",
+  "keywords": [
+    "cors",
+    "fastify",
+    "proxy",
+    "simple"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LordotU/corsyusha"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "author": "Oleg Levshin <LevshinO@gmail.com>",
+  "main": "lib/index.js",
+  "bin": {
+    "corsyusha": "bin/corsyusha.js"
+  },
+  "scripts": {
+    "lint": "eslint -c ./.eslintrc.js ./lib ./bin",
+    "pre-commit": "lint-staged",
+    "test": "yarn test:jest && yarn test:coverage",
+    "test:jest": "yarn jest",
+    "test:coverage": "cat ./__tests__/coverage/lcov.info | coveralls"
+  },
+  "config": {
+    "pre-git": {
+      "allow-untracked-files": true,
+      "pre-commit": [
+        "yarn pre-commit"
+      ]
+    }
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "<rootDir>/__tests__/coverage",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/__tests__/"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "html"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/__tests__/coverage/"
+    ],
+    "verbose": false
+  },
   "dependencies": {
     "colors": "^1.3.3",
     "command-line-args": "^5.1.1",
@@ -17,5 +61,23 @@
     "fastify-cors": "^2.1.2",
     "pino-pretty": "^2.6.0",
     "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "jest": "^24.7.1",
+    "lint-staged": "^8.1.5",
+    "pre-git": "^3.17.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "yarn eslint -c ./.eslintrc.js",
+      "git add"
+    ]
+  },
+  "release": {
+    "analyzeCommits": "simple-commit-message"
   }
 }

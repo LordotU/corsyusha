@@ -1,11 +1,14 @@
 FROM node:lts-alpine
 
+LABEL maintainer="levshino@gmail.com"
+LABEL description="Simple and fast proxy to bypass CORS issues during prototyping against existing APIs"
+
 RUN mkdir -p /app
 WORKDIR /app
 COPY . /app
-RUN chmod +x ./bin/lcp.js
-RUN npm i
+RUN chmod +x ./bin/corsyusha.js
+RUN yarn install
 
-EXPOSE 8010/tcp
+EXPOSE 8118
 
-ENTRYPOINT [ "./bin/lcp.js" ]
+ENTRYPOINT [ "./bin/corsyusha.js" ]
