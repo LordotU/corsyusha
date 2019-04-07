@@ -1,5 +1,8 @@
 # Corsyusha — Local CORS Proxy
 
+[![License](https://img.shields.io/badge/License-MIT-000000.svg)](https://opensource.org/licenses/MIT)
+[![Coverage Status](https://coveralls.io/repos/github/LordotU/corsyusha/badge.svg)](https://coveralls.io/github/LordotU/corsyusha)
+
 ## Description
 
 Simple and fast (built on top of [fastify](https://www.npmjs.com/package/fastify) proxy to bypass [CORS](https://developer.mozilla.org/ru/docs/Web/HTTP/CORS) issues during prototyping against existing APIs without having to worry about CORS
