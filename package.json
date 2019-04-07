@@ -22,7 +22,7 @@
     "lint": "eslint -c ./.eslintrc.js ./lib ./bin",
     "pre-commit": "lint-staged",
     "test": "yarn test:jest && yarn test:coverage",
-    "test:jest": "yarn jest",
+    "test:jest": "yarn jest --detectOpenHandles --runInBand",
     "test:coverage": "cat ./__tests__/coverage/lcov.info | coveralls"
   },
   "config": {
@@ -68,8 +68,10 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
     "jest": "^24.7.1",
+    "jest-mock-process": "^1.2.0",
     "lint-staged": "^8.1.5",
-    "pre-git": "^3.17.1"
+    "pre-git": "^3.17.1",
+    "supertest": "^4.0.2"
   },
   "lint-staged": {
     "*.js": [

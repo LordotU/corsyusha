@@ -38,7 +38,7 @@ const defaltArgs = [
   {
     name: 'serverLogging',
     alias: 'l',
-    type: Boolean,
+    type: String,
     defaultValue: process.env.CORSYUSHA_SERVER_LOGGING,
   },
 ]
@@ -64,9 +64,15 @@ const main = async () => {
       throw new Error(`--port ${port} was occupied, try port: ${availablePort}`)
     }
 
-    const normalizedServerLogging = ['true', '1', 'yes', true, 1].includes(serverLogging)
+    const normalizedServerLogging = ['', 'true', '1', 'yes', true, 1].includes(serverLogging)
 
-    corsyusha(url, port, host, urlSection, normalizedServerLogging)
+    await corsyusha({
+      url,
+      port,
+      host,
+      urlSection,
+      serverLogging: normalizedServerLogging,
+    })
   } catch (error) {
     console.error(error)
     process.exit(1)
