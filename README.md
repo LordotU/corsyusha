@@ -24,6 +24,9 @@ yarn global add corsyusha
 ## Testing
 
 ```bash
+yarn test:jest # Runs Jest with coverage collection
+yarn test:coverage # Sends coverage to .coveralls.io
+yarn test # yarn test:jest && yarn test:coverage
 ```
 
 ## Usage
