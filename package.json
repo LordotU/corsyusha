@@ -1,6 +1,6 @@
 {
   "name": "corsyusha",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple and fast (built on top of fastify) proxy to bypass CORS issues during prototyping against existing APIs without having to worry about CORS",
   "keywords": [
     "cors",
