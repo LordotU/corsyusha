@@ -64,7 +64,7 @@ const main = async () => {
       throw new Error(`--port ${port} was occupied, try port: ${availablePort}`)
     }
 
-    const normalizedServerLogging = ['', 'true', '1', 'yes', true, 1].includes(serverLogging)
+    const normalizedServerLogging = [null, 'true', '1', 'yes', true, 1].includes(serverLogging)
 
     await corsyusha({
       url,
