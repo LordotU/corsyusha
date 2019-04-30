@@ -109,6 +109,16 @@ describe('bin', () => {
     expect(result.stderr).toMatch(/--url is required\!/)
   })
 
+  test('should not run with incorect JSON in --headers param', async () => {
+    const result = await exec([
+      '--url', URL,
+      '--headers', '}'
+    ])
+
+    expect(result.code).toBe(1)
+    expect(result.stderr).toMatch(/Unexpected token/)
+  })
+
   test('should advise a free port in a case of selected --port is occupied', async () => {
     const proxy = await corsyusha(INITIAL_ARGS)
 

@@ -41,6 +41,11 @@ const defaltArgs = [
     type: String,
     defaultValue: process.env.CORSYUSHA_SERVER_LOGGING,
   },
+  {
+    name: 'headers',
+    type: String,
+    defaultValue: process.env.CORSYUSHA_HEADERS,
+  },
 ]
 
 const main = async () => {
@@ -52,6 +57,7 @@ const main = async () => {
       host,
       urlSection,
       serverLogging,
+      headers,
     } = args(defaltArgs)
 
     if (! url) {
@@ -66,12 +72,15 @@ const main = async () => {
 
     const normalizedServerLogging = [null, 'true', '1', 'yes', true, 1].includes(serverLogging)
 
+    const normalizedHeaders = JSON.parse(headers)
+
     await corsyusha({
       url,
       port,
       host,
       urlSection,
       serverLogging: normalizedServerLogging,
+      headers: normalizedHeaders,
     })
   } catch (error) {
     console.error(error)
