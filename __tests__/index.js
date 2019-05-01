@@ -9,6 +9,7 @@ const mockProcess = require('jest-mock-process')
 const request = require('request')
 const supertest = require('supertest')
 
+
 const corsyusha = require('../lib/index.js')
 
 const URL = 'https://licenseapi.herokuapp.com'
@@ -24,18 +25,26 @@ const INITIAL_ARGS = {
 }
 
 describe('lib', () => {
-  let mockStdout
   let proxy
 
-  beforeEach(() => {
-    mockStdout = mockProcess.mockProcessStdout()
-  })
   afterEach(async () => {
-    mockStdout.mockRestore()
     await proxy.close()
   })
 
+  test('server startup should fails if given --port is occupied', async () => {
+    const mockExit = mockProcess.mockProcessExit()
+
+    proxy = await corsyusha(INITIAL_ARGS)
+    await corsyusha(INITIAL_ARGS)
+
+    expect(mockExit).toHaveBeenCalledWith(1)
+
+    mockExit.mockRestore()
+  })
+
   test('server logging should works correctly if corresponding flag are passed', async () => {
+    const mockStdout = mockProcess.mockProcessStdout()
+
     proxy = await corsyusha({
       ...INITIAL_ARGS,
       serverLogging: true,
@@ -44,6 +53,8 @@ describe('lib', () => {
     await proxy.ready()
 
     expect(mockStdout).toHaveBeenNthCalledWith(1, expect.stringMatching(/Server listening at/))
+
+    mockStdout.mockRestore()
   })
 
   test('all requests besides urlSection should get 404 responses', async () => {
@@ -90,18 +101,18 @@ describe('lib', () => {
   })
 })
 
-const exec = (args = []) => new Promise(resolve => childExec(
-  `${path.resolve('./bin/corsyusha.js')} ${args.join(' ')}`,
-  { cwd: process.cwd() },
-  (error, stdout, stderr) => resolve({
-    code: error && error.code ? error.code : 0,
-    error,
-    stdout,
-    stderr,
-  })
-))
-
 describe('bin', () => {
+  const exec = (args = []) => new Promise(resolve => childExec(
+    `${path.resolve('./bin/corsyusha.js')} ${args.join(' ')}`,
+    { cwd: process.cwd() },
+    (error, stdout, stderr) => resolve({
+      code: error && error.code ? error.code : 0,
+      error,
+      stdout,
+      stderr,
+    })
+  ))
+
   test('should not run without --url param', async () => {
     const result = await exec()
 
