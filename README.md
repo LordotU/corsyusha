@@ -102,23 +102,25 @@ Only one argument is **required**: `--url` (or `CORSYUSHA_URL` if you prefer env
 
 ### Options
 
-| Option          | Shorthand | Example                          | Default   |
-| --------------- | --------- | -------------------------------- | --------: |
-| --url           | -u        | https://licenseapi.herokuapp.com |           |
-| --port          | -p        | 8119                             |      8118 |
-| --host          | -h        | 0.0.0.0                          | localhost |
-| --urlSection    | -s        | trhough                          |     proxy |
-| --serverLogging | -l        | true                             |     false |
+| Option          | Shorthand | Example                           | Default   |
+| --------------- | --------- | --------------------------------- | --------: |
+| --url           | -u        | https://licenseapi.herokuapp.com  |           |
+| --port          | -p        | 8119                              |      8118 |
+| --host          | -h        | 0.0.0.0                           | localhost |
+| --urlSection    | -s        | trhough                           |     proxy |
+| --serverLogging | -l        | true                              |     false |
+| --headers       |           | {"X-Requested-With": "Corsyusha"} |        {} |
 
 ### Environment variables
 
-| Option                   | Example                          | Default   |
-| ------------------------ | -------------------------------- | --------: |
-| CORSYUSHA_URL            | https://licenseapi.herokuapp.com |           |
-| CORSYUSHA_PORT           | 8119                             |      8118 |
-| CORSYUSHA_HOST           | 0.0.0.0                          | localhost |
-| CORSYUSHA_URL_SECTION    | trhough                          |     proxy |
-| CORSYUSHA_SERVER_LOGGING | true                             |     false |
+| Option                   | Example                           | Default   |
+| ------------------------ | --------------------------------- | --------: |
+| CORSYUSHA_URL            | https://licenseapi.herokuapp.com  |           |
+| CORSYUSHA_PORT           | 8119                              |      8118 |
+| CORSYUSHA_HOST           | 0.0.0.0                           | localhost |
+| CORSYUSHA_URL_SECTION    | trhough                           |     proxy |
+| CORSYUSHA_SERVER_LOGGING | true                              |     false |
+| CORSYUSHA_HEADERS        | {"X-Requested-With": "Corsyusha"} |        {} |
 
 ---
 
