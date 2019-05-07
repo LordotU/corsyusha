@@ -72,7 +72,7 @@ const main = async () => {
 
     const normalizedServerLogging = [null, 'true', '1', 'yes', true, 1].includes(serverLogging)
 
-    const normalizedHeaders = JSON.parse(headers)
+    const parsedHeaders = JSON.parse(headers)
 
     await corsyusha({
       url,
@@ -80,7 +80,7 @@ const main = async () => {
       host,
       urlSection,
       serverLogging: normalizedServerLogging,
-      headers: normalizedHeaders,
+      headers: parsedHeaders,
     })
   } catch (error) {
     console.error(error)
