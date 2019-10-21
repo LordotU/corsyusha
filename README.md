@@ -1,6 +1,7 @@
 # Corsyusha — Local CORS Proxy
 
 [![License](https://img.shields.io/badge/License-MIT-000000.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/LordotU/corsyusha.svg?branch=master)](https://travis-ci.org/LordotU/corsyusha)
 [![Coverage Status](https://coveralls.io/repos/github/LordotU/corsyusha/badge.svg)](https://coveralls.io/github/LordotU/corsyusha)
 
 ## Description
