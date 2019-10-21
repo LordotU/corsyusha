@@ -102,26 +102,27 @@ Only one argument is **required**: `--url` (or `CORSYUSHA_URL` if you prefer env
 
 ### Options
 
-| Option          | Shorthand | Example                           | Default   |
-| --------------- | --------- | --------------------------------- | --------: |
+| Option          | Shorthand | Example                           |   Default |
+|-----------------|-----------|-----------------------------------|----------:|
 | --url           | -u        | https://licenseapi.herokuapp.com  |           |
 | --port          | -p        | 8119                              |      8118 |
 | --host          | -h        | 0.0.0.0                           | localhost |
 | --urlSection    | -s        | trhough                           |     proxy |
 | --serverLogging | -l        | true                              |     false |
 | --headers       |           | {"X-Requested-With": "Corsyusha"} |        {} |
+| --headers       |           | {"X-Requested-With": "Corsyusha"} |        {} |
+| --origin        | -o        | http://127.0.0.1                  |         * |
+| --reflectOrigin | -r        | true                              |     false |
 
 ### Environment variables
 
-| Option                   | Example                           | Default   |
-| ------------------------ | --------------------------------- | --------: |
+| Option                   | Example                           |   Default |
+|--------------------------|-----------------------------------|----------:|
 | CORSYUSHA_URL            | https://licenseapi.herokuapp.com  |           |
 | CORSYUSHA_PORT           | 8119                              |      8118 |
 | CORSYUSHA_HOST           | 0.0.0.0                           | localhost |
 | CORSYUSHA_URL_SECTION    | trhough                           |     proxy |
 | CORSYUSHA_SERVER_LOGGING | true                              |     false |
 | CORSYUSHA_HEADERS        | {"X-Requested-With": "Corsyusha"} |        {} |
-
----
-
-###### Inspired by: https://github.com/garmeeh/local-cors-proxy
+| CORSYUSHA_ORIGIN         | http://127.0.0.1                  |         * |
+| CORSYUSHA_REFLECT_ORIGIN | true                              |     false |

@@ -10,7 +10,7 @@ const detectPort = require('detect-port')
 const corsyusha = require('../lib')
 
 
-const defaltArgs = [
+const defaultArgs = [
   {
     name: 'url',
     alias: 'u',
@@ -46,7 +46,21 @@ const defaltArgs = [
     type: String,
     defaultValue: process.env.CORSYUSHA_HEADERS,
   },
+  {
+    name: 'origin',
+    alias: 'o',
+    type: String,
+    defaultValue: process.env.CORSYUSHA_ORIGIN,
+  },
+  {
+    name: 'reflectOrigin',
+    alias: 'r',
+    type: Boolean,
+    defaultValue: process.env.CORSYUSHA_REFLECT_ORIGIN,
+  },
 ]
+
+const isBooleanTrue = val => [null, 'true', '1', 'yes', true, 1].includes(val)
 
 const main = async () => {
 
@@ -58,7 +72,9 @@ const main = async () => {
       urlSection,
       serverLogging,
       headers,
-    } = args(defaltArgs)
+      origin,
+      reflectOrigin,
+    } = args(defaultArgs)
 
     if (! url) {
       throw new Error('--url is required!')
@@ -70,9 +86,11 @@ const main = async () => {
       throw new Error(`--port ${port} was occupied, try port: ${availablePort}`)
     }
 
-    const normalizedServerLogging = [null, 'true', '1', 'yes', true, 1].includes(serverLogging)
+    const normalizedServerLogging = isBooleanTrue(serverLogging)
 
     const parsedHeaders = JSON.parse(headers)
+
+    const normalizedReflectOrigin = isBooleanTrue(reflectOrigin)
 
     await corsyusha({
       url,
@@ -81,6 +99,8 @@ const main = async () => {
       urlSection,
       serverLogging: normalizedServerLogging,
       headers: parsedHeaders,
+      origin,
+      reflectOrigin: normalizedReflectOrigin,
     })
   } catch (error) {
     console.error(error)

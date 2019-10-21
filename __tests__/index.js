@@ -17,12 +17,16 @@ const PORT = 8118
 const HOST = 'localhost'
 const URL_SECTION = '/proxy'
 
+const LOCALHOST = 'http://localhost'
+
 const INITIAL_ARGS = {
   url: URL,
   port: PORT,
   host: HOST,
   urlSection: URL_SECTION,
 }
+
+jest.setTimeout(10 * 1000)
 
 describe('lib', () => {
   let proxy
@@ -70,7 +74,7 @@ describe('lib', () => {
     expect(response.body).toEqual({
       "statusCode": 404,
       "error": "Not Found",
-      "message": "Not Found"
+      "message": "Route GET:/ not found",
     })
   })
 
@@ -98,6 +102,71 @@ describe('lib', () => {
     })
 
     expect(responseFromProxy.body).toEqual(responseFromRequest)
+  })
+
+  test('should correctly merge request headers with given --headers', async () => {
+    const mockStdout = mockProcess.mockProcessStdout()
+
+    proxy = await corsyusha({
+      ...INITIAL_ARGS,
+      serverLogging: true,
+      headers: {'X-Requested-With': 'Corsyusha'},
+    })
+
+    await proxy.ready()
+
+    await supertest(proxy.server)
+      .get(`${URL_SECTION}/licenses/mit`)
+      .expect(200)
+      .expect('Content-Type', /json/)
+
+    expect(mockStdout).toHaveBeenCalledWith(expect.stringMatching(/X-Requested-With/i))
+  })
+
+  test('should correctly reflect origin if given', async () => {
+    proxy = await corsyusha({
+      ...INITIAL_ARGS,
+      reflectOrigin: true,
+    })
+
+    await proxy.ready()
+
+    await supertest(proxy.server)
+      .get(`${URL_SECTION}/licenses/mit`)
+      .set('Origin', LOCALHOST)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect('Access-Control-Allow-Origin', LOCALHOST)
+  })
+
+  test('should correctly set origin if given', async () => {
+    proxy = await corsyusha({
+      ...INITIAL_ARGS,
+      origin: LOCALHOST,
+    })
+
+    await proxy.ready()
+
+    await supertest(proxy.server)
+      .get(`${URL_SECTION}/licenses/mit`)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect('Access-Control-Allow-Origin', LOCALHOST)
+  })
+
+  test('should correctly response for OPTIONS request', async () => {
+    proxy = await corsyusha({
+      ...INITIAL_ARGS,
+    })
+
+    await proxy.ready()
+
+    await supertest(proxy.server)
+      .options(`${URL_SECTION}/licenses/mit`)
+      .set('Access-Control-Request-Headers', 'X-Requested-With')
+      .expect(204)
+      .expect('Content-Length', "0")
+      .expect('Access-Control-Allow-Headers', 'X-Requested-With')
   })
 })
 
