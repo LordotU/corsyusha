@@ -1,6 +1,6 @@
 {
   "name": "corsyusha",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Simple and fast (built on top of fastify) proxy to bypass CORS issues during prototyping against existing APIs without having to worry about CORS",
   "keywords": [
     "cors",
@@ -21,7 +21,7 @@
   "scripts": {
     "lint": "eslint -c ./.eslintrc.js ./lib ./bin",
     "pre-commit": "lint-staged",
-    "test": "yarn test:jest && yarn test:coverage",
+    "test": "yarn test:jest && yarn test:coverage && rm -rf ./coverage",
     "test:jest": "yarn jest --detectOpenHandles --runInBand",
     "test:coverage": "cat ./__tests__/coverage/lcov.info | coveralls"
   },
@@ -58,7 +58,6 @@
     "detect-port": "^1.3.0",
     "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
-    "fastify-cors": "^2.1.2",
     "pino-pretty": "^2.6.0",
     "request": "^2.88.0"
   },
